@@ -9,8 +9,9 @@
 namespace EzSystems\SystemInfoBundle\Controller;
 
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
-use Symfony\Component\HttpFoundation\Response;
+use EzSystems\PlatformUIBundle\Controller\Controller;
 use EzSystems\SystemInfoBundle\Helper\SystemInfoHelperInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class SystemInfoController extends Controller
 {

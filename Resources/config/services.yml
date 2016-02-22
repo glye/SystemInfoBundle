@@ -13,4 +13,4 @@ services:
         class: %ezsystems.systeminfo.controller.systeminfo.class%
         arguments:
             - @ezsystems.systeminfo.helper.systeminfo
-        parent: ezsystems.systeminfo.controller.base
+        parent: ezsystems.platformui.controller.base

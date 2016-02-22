@@ -8,33 +8,15 @@
  */
 namespace EzSystems\SystemInfoBundle;
 
-//use EzSystems\SystemInfoBundle\DependencyInjection\Configuration;
-//use EzSystems\SystemInfoBundle\DependencyInjection\EzSystemsSystemInfoExtension;
-//use EzSystems\PlatformUIBundle\DependencyInjection\Compiler\ApplicationConfigProviderPass;
-//use EzSystems\PlatformUIBundle\DependencyInjection\EzPlatformUIExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use EzSystems\SystemInfoBundle\DependencyInjection\EzSystemsSystemInfoExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EzSystemsSystemInfoBundle extends Bundle
 {
-//    protected $name = 'eZSystemInfoBundle';
-//
-//    public function getContainerExtension()
-//    {
-//        return new EzPlatformUIExtension();
-//    }
+    protected $name = 'eZSystemInfoBundle';
 
-    /**
-     * Builds the bundle.
-     * It is only ever called once when the cache is empty.
-     * This method can be overridden to register compilation passes,
-     * other extensions, ...
-     *
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     */
-    public function build(ContainerBuilder $container)
+    public function getContainerExtension()
     {
-        parent::build($container);
-//        $container->addCompilerPass(new ApplicationConfigProviderPass());
+        return new EzSystemsSystemInfoExtension();
     }
 }
