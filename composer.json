@@ -1,0 +1,28 @@
+{
+    "name": "ezsystems/system-info-bundle",
+    "description": "Providing information about the system eZ Platform is running on",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Gunnstein Lye",
+            "email": "gunnstein.lye@ez.no"
+        }
+    ],
+    "require": {
+        "ezsystems/ezpublish-kernel": "~6.1.0@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.7",
+        "matthiasnoback/symfony-dependency-injection-test": "^0.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "EzSystems\\SystemInfoBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1.x-dev"
+        }
+    }
+}

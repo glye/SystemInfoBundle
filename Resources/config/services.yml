@@ -1,0 +1,16 @@
+parameters:
+    ezsystems.systeminfo.helper.systeminfo.class: EzSystems\SystemInfoBundle\Helper\SystemInfoHelper
+    ezsystems.systeminfo.controller.systeminfo.class: EzSystems\SystemInfoBundle\Controller\SystemInfoController
+
+services:
+    ezsystems.systeminfo.helper.systeminfo:
+        class: %ezsystems.systeminfo.helper.systeminfo.class%
+        arguments:
+            - @database_connection
+            - %kernel.bundles%
+
+    ezsystems.systeminfo.controller.systeminfo:
+        class: %ezsystems.systeminfo.controller.systeminfo.class%
+        arguments:
+            - @ezsystems.systeminfo.helper.systeminfo
+        parent: ezsystems.systeminfo.controller.base
