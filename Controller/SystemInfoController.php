@@ -20,9 +20,15 @@ class SystemInfoController extends Controller
      */
     protected $systemInfoHelper;
 
-    public function __construct(SystemInfoHelperInterface $systemInfoHelper)
+    /**
+     * @var string
+     */
+    private $installDir;
+
+    public function __construct(SystemInfoHelperInterface $systemInfoHelper, $installDir)
     {
         $this->systemInfoHelper = $systemInfoHelper;
+        $this->installDir = $installDir;
     }
 
     public function performAccessChecks()
@@ -41,6 +47,7 @@ class SystemInfoController extends Controller
         return $this->render('eZSystemInfoBundle:SystemInfo:info.html.twig', [
             'ezplatformInfo' => $this->systemInfoHelper->getEzPlatformInfo(),
             'systemInfo' => $this->systemInfoHelper->getSystemInfo(),
+            'composerInfo' => $this->getComposerInfo(),
         ]);
     }
 
@@ -56,5 +63,32 @@ class SystemInfoController extends Controller
         $response = new Response(ob_get_clean());
 
         return $response;
+    }
+
+    /**
+     * Getting composer package info for use in tempaltes.
+     *
+     * @return array
+     */
+    private function getComposerInfo()
+    {
+        if (!file_exists($this->installDir . 'composer.lock')) {
+            return [];
+        }
+
+        $packages = [];
+        $lockData = json_decode(file_get_contents($this->installDir . 'composer.lock'), true);
+        foreach ($lockData['packages'] as $packageData) {
+            $packages[$packageData['name']] = [
+                'version' => $packageData['version'],
+                'time' => $packageData['time'],
+                'homepage' => isset($packageData['homepage']) ? $packageData['homepage'] : '',
+                'reference' => $packageData['source']['reference'],
+            ];
+        }
+
+        ksort($packages, SORT_FLAG_CASE | SORT_STRING);
+
+        return $packages;
     }
 }

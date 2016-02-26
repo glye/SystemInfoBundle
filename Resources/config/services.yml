@@ -13,4 +13,5 @@ services:
         class: %ezsystems.systeminfo.controller.systeminfo.class%
         arguments:
             - @ezsystems.systeminfo.helper.systeminfo
+            - "%kernel.root_dir%/../"
         parent: ezsystems.platformui.controller.base
