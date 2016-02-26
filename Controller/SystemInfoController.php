@@ -10,25 +10,18 @@ namespace EzSystems\SystemInfoBundle\Controller;
 
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use EzSystems\PlatformUIBundle\Controller\Controller;
-use EzSystems\SystemInfoBundle\Helper\SystemInfoHelperInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class SystemInfoController extends Controller
 {
     /**
-     * @var \EzSystems\SystemInfoBundle\Helper\SystemInfoHelperInterface
+     * @var \EzSystems\SystemInfoBundle\InfoProvider\InfoProviderInterface[] Info providers
      */
-    protected $systemInfoHelper;
+    protected $infoProviders;
 
-    /**
-     * @var string
-     */
-    private $installDir;
-
-    public function __construct(SystemInfoHelperInterface $systemInfoHelper, $installDir)
+    public function __construct(...$infoProviders) // TODO pretty sure this isn't the way to do this
     {
-        $this->systemInfoHelper = $systemInfoHelper;
-        $this->installDir = $installDir;
+        $this->infoProviders = $infoProviders;
     }
 
     public function performAccessChecks()
@@ -44,11 +37,15 @@ class SystemInfoController extends Controller
      */
     public function infoAction()
     {
-        return $this->render('eZSystemInfoBundle:SystemInfo:info.html.twig', [
-            'ezplatformInfo' => $this->systemInfoHelper->getEzPlatformInfo(),
-            'systemInfo' => $this->systemInfoHelper->getSystemInfo(),
-            'composerInfo' => $this->getComposerInfo(),
-        ]);
+        $infoArray = ['infoProviders' => []];
+        foreach ($this->infoProviders as $infoProvider) {
+            $infoArray['infoProviders'][$infoProvider->getIdentifier()] = [
+                'template' => $infoProvider->getTemplate(),
+                'info' => $infoProvider->getInfo(),
+            ];
+        }
+
+        return $this->render('eZSystemInfoBundle:SystemInfo:info.html.twig', $infoArray);
     }
 
     /**
@@ -63,32 +60,5 @@ class SystemInfoController extends Controller
         $response = new Response(ob_get_clean());
 
         return $response;
-    }
-
-    /**
-     * Getting composer package info for use in tempaltes.
-     *
-     * @return array
-     */
-    private function getComposerInfo()
-    {
-        if (!file_exists($this->installDir . 'composer.lock')) {
-            return [];
-        }
-
-        $packages = [];
-        $lockData = json_decode(file_get_contents($this->installDir . 'composer.lock'), true);
-        foreach ($lockData['packages'] as $packageData) {
-            $packages[$packageData['name']] = [
-                'version' => $packageData['version'],
-                'time' => $packageData['time'],
-                'homepage' => isset($packageData['homepage']) ? $packageData['homepage'] : '',
-                'reference' => $packageData['source']['reference'],
-            ];
-        }
-
-        ksort($packages, SORT_FLAG_CASE | SORT_STRING);
-
-        return $packages;
     }
 }

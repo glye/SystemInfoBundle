@@ -1,16 +1,14 @@
 <?php
+
 /**
- * This file is part of the eZ SystemInfo package.
+ * File containing the EzSystemsSystemInfoExtension class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
- * @version //autogentag//
  */
 namespace EzSystems\SystemInfoBundle\DependencyInjection;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
-//use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

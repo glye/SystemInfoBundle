@@ -1,43 +1,43 @@
 <?php
 
 /**
- * File containing the SystemInfoHelper class.
+ * File containing the SystemInfoProvider class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-namespace EzSystems\SystemInfoBundle\Helper;
+namespace EzSystems\SystemInfoBundle\InfoProvider;
 
-use Symfony\Component\HttpKernel\Kernel;
 use Doctrine\DBAL\Connection;
 use ezcSystemInfo;
 
-class SystemInfoHelper implements SystemInfoHelperInterface
+class SystemInfoProvider extends InfoProvider
 {
     /**
-     * An array containing the active bundles (keys) and the corresponding
-     * namespace.
-     *
-     * @var array
-     */
-    private $bundles;
-
-    /**
-     * The database connection, only used to retrieve some information on the
-     * database itself.
+     * The database connection, only used to retrieve some information on the database itself.
      *
      * @var \Doctrine\DBAL\Connection
      */
     private $connection;
 
-    public function __construct(Connection $db, array $bundles)
+    public function __construct($template, Connection $db)
     {
-        $this->bundles = $bundles;
+        $this->template = $template;
         $this->connection = $db;
     }
 
     /**
-     * Returns the system information:
+     * Returns info provider identifier.
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return 'systemInfo';
+    }
+
+    /**
+     * Returns information about the system eZ Platform is installed on.
      *  - cpu information
      *  - memory size
      *  - php version
@@ -46,7 +46,7 @@ class SystemInfoHelper implements SystemInfoHelperInterface
      *
      * @return array
      */
-    public function getSystemInfo()
+    public function getInfo()
     {
         $info = ezcSystemInfo::getInstance();
         $accelerator = false;
@@ -73,25 +73,5 @@ class SystemInfoHelper implements SystemInfoHelperInterface
                 'username' => $this->connection->getUsername(),
             ],
         ];
-    }
-
-    /**
-     * Returns informations on the current eZ Platform install:
-     *  - eZ Publish legacy version
-     *  - eZ Publish legacy extensions
-     *  - Symfony bundles.
-     *
-     * @return array
-     */
-    public function getEzPlatformInfo()
-    {
-        $info = [
-            'version' => 'dev',
-            'symfony' => Kernel::VERSION,
-            'bundles' => $this->bundles,
-        ];
-        ksort($info['bundles'], SORT_FLAG_CASE | SORT_STRING);
-
-        return $info;
     }
 }
