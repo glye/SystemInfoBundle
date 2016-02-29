@@ -33,7 +33,7 @@ class SystemInfoProvider extends InfoProvider
      */
     public function getIdentifier()
     {
-        return 'systemInfo';
+        return 'server';
     }
 
     /**

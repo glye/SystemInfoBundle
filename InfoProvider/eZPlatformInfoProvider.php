@@ -32,7 +32,7 @@ class eZPlatformInfoProvider extends InfoProvider
      */
     public function getIdentifier()
     {
-        return 'ezplatformInfo';
+        return 'bundles';
     }
 
     /**

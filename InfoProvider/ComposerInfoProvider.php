@@ -28,7 +28,7 @@ class ComposerInfoProvider extends InfoProvider
      */
     public function getIdentifier()
     {
-        return 'composerInfo';
+        return 'packages';
     }
 
     /**

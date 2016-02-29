@@ -7,8 +7,6 @@ The `InfoProviderInterface` allows extensible info providers.
 
 ## TODO
 
-InfoProvider templates are not quite completed.
-
 Add a Command which provides CLI/file output, using the same InfoProviders.
 
 `SystemInfoController` uses a variadic constructor, to allow a variable number of InfoProviders. I'm pretty sure this
